@@ -3031,7 +3031,7 @@ if selected_section in sidebar_options:
         )
         st.link_button(
             "Linkedin",
-            "https://github.com",
+            "https://linkedin.com/in/samir38",
         )
         st.link_button("Portfolio", "https://noto.li/fxHVPg")
     try:
