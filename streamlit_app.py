@@ -3017,26 +3017,23 @@ st.html("""
 
 if selected_section in sidebar_options:
     option_index = sidebar_options.index(selected_section)
-    left_header_child, right_header_child = st.columns([2, 1])
-    with left_header_child:
-        st.subheader(
-            f"Python Quick Ref : {selected_section}",
-            width="content",
-            text_alignment="center",
-            divider=True,
+    st.subheader(
+        f"Python Quick Ref : {selected_section}",
+        width="content",
+        text_alignment="center",
+        divider=True,
+    )
+    with st.container(
+        border=False, horizontal=True, vertical_alignment="center", width="content"
+    ):
+        st.text(
+            "Samir Solanki",
         )
-    with right_header_child:
-        with st.container(
-            border=False, horizontal=True, vertical_alignment="center", width="content"
-        ):
-            st.text(
-                "Samir Solanki",
-            )
-            st.link_button(
-                "Linkedin",
-                "https://github.com",
-            )
-            st.link_button("Portfolio", "https://noto.li/fxHVPg")
+        st.link_button(
+            "Linkedin",
+            "https://github.com",
+        )
+        st.link_button("Portfolio", "https://noto.li/fxHVPg")
     try:
         py_cs_config = py_cheatsheet_config[option_index]
         if py_cs_config:
