@@ -2432,8 +2432,8 @@ print("Fetching data...")
 
 try:
     url: str = "https://jsonplaceholder.typicode.com/psts/4"
-    response = requests.get(url, timeout=)
-    response.raise_for_status()4
+    response = requests.get(url, timeout=4)
+    response.raise_for_status()
 except requests.Timeout:
     print("Request time out")
 except requests.RequestException as e:
