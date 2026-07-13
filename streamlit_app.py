@@ -3034,6 +3034,7 @@ if selected_section in sidebar_options:
             "https://linkedin.com/in/samir38",
         )
         st.link_button("Portfolio", "https://noto.li/fxHVPg")
+        st.divider()
     try:
         py_cs_config = py_cheatsheet_config[option_index]
         if py_cs_config:
