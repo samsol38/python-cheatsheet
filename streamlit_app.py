@@ -2988,7 +2988,7 @@ def py_chapter_tab(
 
 
 with st.sidebar:
-    preselected_chapter = "Operators"
+    preselected_chapter = "Variables"
     st.header("Quick Ref Menu", width="content", divider=True)
     selected_section = option_menu(
         menu_title=None,
@@ -3020,12 +3020,23 @@ st.html("""
 
 if selected_section in sidebar_options:
     option_index = sidebar_options.index(selected_section)
-    st.subheader(
-        f"Python Quick Ref : {selected_section}",
-        width="content",
-        text_alignment="center",
-        divider=True,
-    )
+    left_header_child, right_header_child = st.columns([2, 1])
+    with left_header_child:
+        st.subheader(
+            f"Python Quick Ref : {selected_section}",
+            width="content",
+            text_alignment="center",
+            divider=True,
+        )
+    with right_header_child:
+        with st.container(
+            border=False, horizontal=True, vertical_alignment="center", width="content"
+        ):
+            st.text(
+                "Samir Solanki",
+            )
+            st.link_button("Linkedin", "https://github.com",)
+            st.link_button("Portfolio", "https://noto.li/fxHVPg")
     try:
         py_cs_config = py_cheatsheet_config[option_index]
         if py_cs_config:
