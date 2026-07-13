@@ -50,10 +50,16 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "streamlit" },
+    { name = "streamlit-code-editor" },
+    { name = "streamlit-option-menu" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "streamlit", specifier = ">=1.59.1" }]
+requires-dist = [
+    { name = "streamlit", specifier = ">=1.59.1" },
+    { name = "streamlit-code-editor", specifier = ">=0.1.22" },
+    { name = "streamlit-option-menu", specifier = ">=0.4.0" },
+]
 
 [[package]]
 name = "blinker"
@@ -587,6 +593,30 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/91/70/1d488cb07fe8510805233c7128272d6502e621146eb0531420211279a898/streamlit-1.59.1.tar.gz", hash = "sha256:0f75162a43b1cd2542f34bff3168c4ea56c7a151fa80bfea02499913fbfccfca", size = 9770793, upload-time = "2026-07-08T12:57:03.26Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/49/84/732e4c832a6ec79cc3119aea2da367bbc00c376a41a063bc477d62e20077/streamlit-1.59.1-py3-none-any.whl", hash = "sha256:b00d41fa9024d28ab30b81e56ddf07d61cda6ae625231dcb13e0be6c07ef1e0f", size = 10338093, upload-time = "2026-07-08T12:57:00.954Z" },
+]
+
+[[package]]
+name = "streamlit-code-editor"
+version = "0.1.22"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "streamlit" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/67/6f/fc455957652d0f42124dbc3090fe58b8919ad5bcba575a36669499ded952/streamlit-code-editor-0.1.22.tar.gz", hash = "sha256:93e6ecb4060614bce99eaf758b4cb5c8ce2accc0eb5140cbbb23c05cb4e9d7f6", size = 3788010, upload-time = "2024-12-29T22:30:22.441Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/43/53/298050f856bfdd7dd47fbcd998af92ec47479a4c0fc1a89ff90c4f27a74a/streamlit_code_editor-0.1.22-py3-none-any.whl", hash = "sha256:31abe12a94abde64123f71049741c248cd52c9de7869decd32a8a5a96695fcf4", size = 4036058, upload-time = "2024-12-29T22:30:18.897Z" },
+]
+
+[[package]]
+name = "streamlit-option-menu"
+version = "0.4.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "streamlit" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5e/27/72dc451cdaef1714fd0d75cc430e50a06c12c9046295fdf1f94af1b766eb/streamlit-option-menu-0.4.0.tar.gz", hash = "sha256:48ec69d59e547fa2fa4bfae001620df8af56a80de2f765ddbb9fcbfb84017129", size = 827290, upload-time = "2024-10-09T14:51:01.685Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fd/52/2f525ad4262dc83d67297f69ec5afcee1438b9e9ae22aa318396725ddbed/streamlit_option_menu-0.4.0-py3-none-any.whl", hash = "sha256:a55fc7554047b6db371595af2182e435b8a2c715ee6124e8543685bd4670b07e", size = 829255, upload-time = "2024-10-09T14:50:59.707Z" },
 ]
 
 [[package]]
