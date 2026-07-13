@@ -2791,6 +2791,7 @@ sidebar_options = [
 ]
 
 
+@st.fragment
 class StreamlitCallbackWriter:
     def __init__(self, buffer, output_label, placeholder):
         self.buffer = buffer
@@ -2820,8 +2821,7 @@ class PySubChapter:
         self.editor_key = f"code_editor_{self.key}-{self.index}"
         self.namespace = {"__builtins__": __import__("builtins")}
 
-        self.render()
-
+    @st.fragment
     def render(self):
         if "title" in self.py_config_value:
             if self.index not in [0, 1]:
@@ -2932,6 +2932,7 @@ class PySubChapter:
         if "notes" in self.py_config_value:
             st.markdown(self.py_config_value["notes"])
 
+    @st.fragment
     def run_py_code(self, code: str, output_label, output_placeholder):
 
         self.output_list = []
@@ -2965,10 +2966,10 @@ def py_chapter_tab(
             left_child, right_child = st.columns(2)
         with left_child:
             if index % 2 == 0:
-                PySubChapter(key, index, config_value)
+                PySubChapter(key, index, config_value).render()
         with right_child:
             if index % 2 == 1:
-                PySubChapter(key, index, config_value)
+                PySubChapter(key, index, config_value).render()
             if py_notes and index == (len(py_code_config) - 1) and index % 2 == 0:
                 st.divider()
                 st.write("##### General Notes:")
