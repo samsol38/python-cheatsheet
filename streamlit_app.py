@@ -2822,7 +2822,6 @@ class PySubChapter:
 
         self.render()
 
-    @st.fragment
     def render(self):
         if "title" in self.py_config_value:
             if self.index not in [0, 1]:
@@ -2933,7 +2932,6 @@ class PySubChapter:
         if "notes" in self.py_config_value:
             st.markdown(self.py_config_value["notes"])
 
-    @st.fragment
     def run_py_code(self, code: str, output_label, output_placeholder):
 
         self.output_list = []
