@@ -2791,7 +2791,6 @@ sidebar_options = [
 ]
 
 
-@st.fragment
 class StreamlitCallbackWriter:
     def __init__(self, buffer, output_label, placeholder):
         self.buffer = buffer
@@ -3035,7 +3034,10 @@ if selected_section in sidebar_options:
             st.text(
                 "Samir Solanki",
             )
-            st.link_button("Linkedin", "https://github.com",)
+            st.link_button(
+                "Linkedin",
+                "https://github.com",
+            )
             st.link_button("Portfolio", "https://noto.li/fxHVPg")
     try:
         py_cs_config = py_cheatsheet_config[option_index]
