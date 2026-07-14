@@ -2820,8 +2820,7 @@ class PySubChapter:
         self.editor_key = f"code_editor_{self.key}-{self.index}"
         self.namespace = {"__builtins__": __import__("builtins")}
 
-        self.render()
-
+    @st.fragment
     def render(self):
         if "title" in self.py_config_value:
             if self.index not in [0, 1]:
@@ -2910,6 +2909,8 @@ class PySubChapter:
                     if self.py_code_output_placeholder_key not in self.py_code:
                         self.py_code[self.py_code_output_placeholder_key] = st.empty()
 
+                    self.py_code[self.py_code_output_key] = {}
+
                     self.py_code[self.py_code_output_key] = self.run_py_code(
                         self.py_code[self.py_code_key]["text"],
                         self.py_code[self.py_code_output_label_key],
@@ -2941,14 +2942,10 @@ class PySubChapter:
         try:
             with contextlib.redirect_stdout(self.writer):
                 exec(code, self.namespace, self.namespace)
-                return {"output": "".join(self.output_list)}
+                return {}
         except Exception as e:
             return {
-                **(
-                    {"output": "".join(self.output_list).removesuffix("\n")}
-                    if self.output_list
-                    else {}
-                ),
+                **({"output": "".join(self.output_list)} if self.output_list else {}),
                 "error": str(e),
             }
 
@@ -2965,10 +2962,10 @@ def py_chapter_tab(
             left_child, right_child = st.columns(2)
         with left_child:
             if index % 2 == 0:
-                PySubChapter(key, index, config_value)
+                PySubChapter(key, index, config_value).render()
         with right_child:
             if index % 2 == 1:
-                PySubChapter(key, index, config_value)
+                PySubChapter(key, index, config_value).render()
             if py_notes and index == (len(py_code_config) - 1) and index % 2 == 0:
                 st.divider()
                 st.write("##### General Notes:")
