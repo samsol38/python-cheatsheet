@@ -40,6 +40,7 @@ price: float = 99.99
 items: list[str] = []
 user: dict[str, str | int] = {"id": 1, "name": "John"}
 
+print(f"name: {name}")
 print(f"age: {age}")
 print(f"is_active: {is_active}")
 print(f"price: {price}")
@@ -544,6 +545,15 @@ s3: str = "{0}, {1}, {2} and {1}".format("Toasted Brioche", "Garlic Aioli", "Smo
 print(f"s1: {s1}")
 print(f"s2: {s2}")
 print(f"s3: {s3}")""",
+                },
+                {
+                    "title": "Raw String",
+                    "py_can_run": True,
+                    "code": """s1: str = f"Hello, {"Bob"}"
+s2: str = "Hello, {}! {}".format(repr("Alice"), repr("Good Morning"))
+
+print(f"s1: {repr(s1)}")
+print(f"s2: {s2!r}")""",
                 },
                 {
                     "title": "Indexing",
@@ -2856,7 +2866,7 @@ class PySubChapter:
         if "title" in self.py_config_value:
             if self.index not in [0, 1]:
                 st.divider()
-            st.write(f"##### {self.py_config_value["title"]}")
+            st.markdown(f"##### {self.py_config_value["title"]}")
         if "desc" in self.py_config_value:
             st.text(self.py_config_value["desc"])
         if "code" in self.py_config_value:
@@ -2950,6 +2960,7 @@ class PySubChapter:
 
                     if "output" in self.py_code[self.py_code_output_key]:
                         self.py_code[self.py_code_output_placeholder_key].empty()
+                        st.success("Output")
                         st.code(
                             self.py_code[self.py_code_output_key]["output"],
                             wrap_lines=True,
@@ -3013,10 +3024,40 @@ def py_chapter_tab(
                 st.markdown(py_notes)
 
 
-with st.sidebar:
-    preselected_chapter = "Variables"
-    st.header("Quick Ref Menu", width="content", divider=True)
-    selected_section = option_menu(
+@st.fragment
+def render_chapter(selected_section_: str):
+    if selected_section_ in sidebar_options:
+        option_index = sidebar_options.index(selected_section_)
+        st.subheader(
+            f"Python Quick Ref : {selected_section_}",
+            width="content",
+            text_alignment="center",
+            divider=True,
+            anchor=False,
+        )
+
+        with st.container(
+            border=False, horizontal=True, vertical_alignment="center", width="content"
+        ):
+            st.markdown(
+                "Developed by: **Samir Solanki** | [Linkedin](https://linkedin.com/in/samir38) | [Portfolio](https://noto.li/fxHVPg)"
+            )
+
+        py_cs_config = py_cheatsheet_config[option_index]
+        if py_cs_config:
+            py_chapter_tab(
+                key=py_cs_config["key"],
+                py_code_config=py_cs_config["py_code_config"],
+                py_notes=py_cs_config.get("py_notes", None),
+            )
+
+
+preselected_chapter = "Variables"
+
+
+def render_sidebar_sections():
+    st.header("Quick Ref Menu", width="content", divider=True, anchor=False)
+    st.session_state["selected_section"] = option_menu(
         menu_title=None,
         options=sidebar_options,
         icons=[None for n in sidebar_options],
@@ -3033,39 +3074,9 @@ with st.sidebar:
         },
     )
 
+
 st.set_page_config(layout="wide")
+with st.sidebar:
+    render_sidebar_sections()
 
-st.html("""
-    <style>
-        /* Targets the specific container holding the code editor */
-        div[class="ace_scroller"] {
-            padding-top: 100px !important;
-        }
-    </style>
-    """)
-
-if selected_section in sidebar_options:
-    option_index = sidebar_options.index(selected_section)
-    st.subheader(
-        f"Python Quick Ref : {selected_section}",
-        width="content",
-        text_alignment="center",
-        divider=True,
-    )
-    with st.container(
-        border=False, horizontal=True, vertical_alignment="center", width="content"
-    ):
-        st.markdown(
-            "Developed by: **Samir Solanki** | [Linkedin](https://linkedin.com/in/samir38) | [Portfolio](https://noto.li/fxHVPg)"
-        )
-    try:
-        py_cs_config = py_cheatsheet_config[option_index]
-        if py_cs_config:
-            py_chapter_tab(
-                key=py_cs_config["key"],
-                py_code_config=py_cs_config["py_code_config"],
-                py_notes=py_cs_config.get("py_notes", None),
-            )
-    except:
-        st.write("Under Construction")
-        pass
+render_chapter(st.session_state["selected_section"])
