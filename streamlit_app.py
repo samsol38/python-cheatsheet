@@ -23,6 +23,7 @@ price = 99.99
 items = []
 user = {"id": 1, "name": "John"}
 
+print(f"name: {name}")
 print(f"age: {age}")
 print(f"is_active: {is_active}")
 print(f"price: {price}")
@@ -91,7 +92,7 @@ print(f"exp_val: {exp_val}")""",
                     "py_can_run": True,
                     "code": """s1: str = "Hello"
 s2: str = 'John'
-s3: str = f"Hello, {s2}"      # f-string
+s3: str = f"Hello, {s2}"
 
 print(f"s1: {s1}")
 print(f"s2: {s2}")
@@ -532,6 +533,17 @@ s[0] = 'h'""",
                     "py_can_run": True,
                     "code": """s: str = "Hello"
 print(f"length: {len(s)}")""",
+                },
+                {
+                    "title": "Formatting",
+                    "py_can_run": True,
+                    "code": """s1: str = f"Hello, {"Bob"}"
+s2: str = "Hello, {}! {}".format("Alice", "Good Morning")
+s3: str = "{0}, {1}, {2} and {1}".format("Toasted Brioche", "Garlic Aioli", "Smoked Turkey")
+
+print(f"s1: {s1}")
+print(f"s2: {s2}")
+print(f"s3: {s3}")""",
                 },
                 {
                     "title": "Indexing",
@@ -2557,21 +2569,30 @@ async def call_concurrent_fetch_data():
 asyncio.run(call_concurrent_fetch_data())""",
                 },
                 {
-                    "title": "Cancel / Timeout Task",
+                    "title": "Cancel Task",
                     "py_can_run": True,
                     "code": """import asyncio
 
-async def simulate_fetch_data(id_: int, sleep_time: int):
-    print(f"id-{id_}: Start fetching...")
-    await asyncio.sleep(sleep_time) 
-    print(f"id-{id_}: Data fetched!")
-    return {"id": id_, "data": "success"}
+async def simulate_fetch_data():
+    print("Start fetching...")
+    await asyncio.sleep(1)
+    print("Data fetched!")
+    return {"data": "success"}
 
-async def call_concurrent_fetch_data():
-    results = await asyncio.gather(simulate_fetch_data(2, 2), simulate_fetch_data(1, 1), return_exceptions=True)
-    print(f"results: {results}")
+async def call_fetch_data():
+    task = asyncio.create_task(simulate_fetch_data())
+    await asyncio.sleep(0.1)
 
-asyncio.run(call_concurrent_fetch_data())""",
+    task.cancel()
+    
+    try:
+        data = await task
+        print(f"data: {data}")
+    except asyncio.CancelledError:
+        print("Cancelled! (Safely handled)")
+
+asyncio.run(call_fetch_data())
+""",
                 },
             ],
         },
