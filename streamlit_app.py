@@ -3055,9 +3055,9 @@ if selected_section in sidebar_options:
     with st.container(
         border=False, horizontal=True, vertical_alignment="center", width="content"
     ):
-        st.markdown("Samir Solanki")
-        st.markdown("[Linkedin](https://linkedin.com/in/samir38)")
-        st.markdown("[Portfolio](https://noto.li/fxHVPg)")
+        st.markdown(
+            "Developed by: **Samir Solanki** | [Linkedin](https://linkedin.com/in/samir38) | [Portfolio](https://noto.li/fxHVPg)"
+        )
     try:
         py_cs_config = py_cheatsheet_config[option_index]
         if py_cs_config:
