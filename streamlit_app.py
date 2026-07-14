@@ -2837,9 +2837,11 @@ class StreamlitCallbackWriter:
         self.buffer = buffer
         self.output_label = output_label
         self.placeholder = placeholder
+        self.output_shown = False
 
     def write(self, data):
-        if not self.buffer:
+        if self.buffer and not self.output_shown:
+            self.output_shown = True
             self.output_label.success("Output")
         self.buffer.append(data)
         self.placeholder.code(
@@ -2866,12 +2868,14 @@ class PySubChapter:
         if "title" in self.py_config_value:
             if self.index not in [0, 1]:
                 st.divider()
-            st.markdown(f"##### {self.py_config_value["title"]}")
+            st.markdown(f"##### {self.py_config_value['title']}")
         if "desc" in self.py_config_value:
             st.text(self.py_config_value["desc"])
         if "code" in self.py_config_value:
             with st.expander(
-                "Playground", expanded=True, key=f"playground_{self.key}-{self.index}"
+                "Playground",
+                expanded=True,
+                key=f"playground_{self.key}-{self.index}",
             ):
                 self.py_code[self.py_code_key] = code_editor(
                     self.py_config_value.get("code", ""),
@@ -2935,7 +2939,6 @@ class PySubChapter:
                     and "text" in self.py_code[self.py_code_key]
                     and self.py_code[self.py_code_key].get("type") == "submit"
                 ):
-
                     self.py_code_output_key = f"py_code_output-{self.key}_{self.index}"
                     self.py_code_output_label_key = (
                         f"output_label-{self.key}_{self.index}"
@@ -2959,6 +2962,7 @@ class PySubChapter:
                     )
 
                     if "output" in self.py_code[self.py_code_output_key]:
+                        self.py_code[self.py_code_output_label_key].empty()
                         self.py_code[self.py_code_output_placeholder_key].empty()
                         st.success("Output")
                         st.code(
@@ -2969,9 +2973,8 @@ class PySubChapter:
 
                     if "error" in self.py_code[self.py_code_output_key]:
                         st.error(
-                            f"**Error**: {self.py_code[self.py_code_output_key]["error"]}"
+                            f"**Error**: {self.py_code[self.py_code_output_key]['error']}"
                         )
-
         if "notes" in self.py_config_value:
             st.markdown(self.py_config_value["notes"])
 
