@@ -2960,6 +2960,7 @@ class PySubChapter:
             }
 
 
+@st.fragment
 def py_chapter_tab(
     py_code_config,
     py_notes=None,
@@ -3033,15 +3034,9 @@ if selected_section in sidebar_options:
     with st.container(
         border=False, horizontal=True, vertical_alignment="center", width="content"
     ):
-        st.text(
-            "Samir Solanki",
-        )
-        st.link_button(
-            "Linkedin",
-            "https://linkedin.com/in/samir38",
-        )
-        st.link_button("Portfolio", "https://noto.li/fxHVPg")
-    st.divider()
+        st.markdown("Samir Solanki")
+        st.markdown("[Linkedin](https://linkedin.com/in/samir38)")
+        st.markdown("[Portfolio](https://noto.li/fxHVPg)")
     try:
         py_cs_config = py_cheatsheet_config[option_index]
         if py_cs_config:
