@@ -4,6 +4,7 @@ import streamlit as st
 from code_editor import code_editor
 from typing import Dict
 from streamlit_option_menu import option_menu
+from datetime import datetime
 
 
 @st.cache_data
@@ -2994,6 +2995,15 @@ class PySubChapter:
                 "error": str(e),
             }
 
+    def flush(self):
+        try:
+            del st.session_state[self.py_code_key]
+            del st.session_state[self.py_code_output_key]
+            del st.session_state[self.py_code_output_label_key]
+            del st.session_state[self.py_code_output_placeholder_key]
+        except:
+            pass
+
 
 @st.fragment
 def py_chapter_tab(
@@ -3049,7 +3059,7 @@ def render_chapter(selected_section_: str):
         py_cs_config = py_cheatsheet_config[option_index]
         if py_cs_config:
             py_chapter_tab(
-                key=py_cs_config["key"],
+                key=f"{py_cs_config["key"]}-{int(datetime.now().timestamp())}",
                 py_code_config=py_cs_config["py_code_config"],
                 py_notes=py_cs_config.get("py_notes", None),
             )
