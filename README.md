@@ -12,9 +12,9 @@ Fast • Beginner Friendly • Interactive • Live Playground
 
 ### 🚀 Live Demo
 
-**👉 [using stlite] https://samsol38.github.io/python-cheatsheet/index.html **
+👉 [using stlite] https://samsol38.github.io/python-cheatsheet/index.html
 
-**👉 [using streamlit] https://py-cheatsheet.streamlit.app/ **
+👉 [using streamlit] https://py-cheatsheet.streamlit.app/
 
 </div>
 
