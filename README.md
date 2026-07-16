@@ -13,6 +13,7 @@ Fast • Beginner Friendly • Interactive • Live Playground
 ### 🚀 Live Demo
 
 **👉 [using stlite] https://samsol38.github.io/python-cheatsheet/index.html **
+
 **👉 [using streamlit] https://py-cheatsheet.streamlit.app/ **
 
 </div>
@@ -103,7 +104,7 @@ git clone https://github.com/samsol38/python-cheatsheet.git
 Go to the project directory
 
 ```bash
-cd python-quick-reference
+cd python-cheatsheet
 ```
 
 Install dependencies
