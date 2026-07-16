@@ -1,8 +1,6 @@
-import io
 import contextlib
 import streamlit as st
 from code_editor import code_editor
-from typing import Dict
 from streamlit_option_menu import option_menu
 from datetime import datetime
 
@@ -2433,7 +2431,7 @@ data = response.json()
 print(f"data: {data}")""",
                 },
                 {
-                    "title": "Response Handling",
+                    "title": "Status Code Handling",
                     "py_can_run": True,
                     "code": """import requests
 
@@ -2802,6 +2800,136 @@ print(f"is_leap_year: {is_leap_year}")""",
 | %Z | Timezone name |
 """,
         },
+        # Regular Expression
+        {
+            "key": "regular_expression",
+            "py_code_config": [
+                {
+                    "title": "Search (Find First Match)",
+                    "py_can_run": True,
+                    "code": """import re
+
+text = "My phone is 9876543210"
+match = re.search(r"\d+", text)
+
+if match:
+    # 9876543210
+    print(match.group())""",
+                },
+                {
+                    "title": "Match (Beginning of String)",
+                    "py_can_run": True,
+                    "code": """import re
+
+text = "Python"
+
+# Match
+print(re.match(r"Py", text))
+
+# None
+print(re.match(r"thon", text))""",
+                },
+                {
+                    "title": "Full Match",
+                    "py_can_run": True,
+                    "code": """import re
+
+# Match
+print(re.fullmatch(r"\d{4}", "2025"))
+
+# None
+print(re.fullmatch(r"\d{4}", "2025A"))""",
+                },
+                {
+                    "title": "Find All Matches",
+                    "py_can_run": True,
+                    "code": """import re
+
+text = "Apple costs 120, Banana costs 80"
+numbers = re.findall(r"\d+", text)
+
+# ['120', '80']
+print(f"numbers: {numbers}")""",
+                },
+                {
+                    "title": "Find Match Positions",
+                    "py_can_run": True,
+                    "code": """import re
+
+text = "cat bat rat"
+
+for match in re.finditer(r"\w+", text):
+    print(f"match-group: {match.group()}")
+    print(f"start-position: {match.start()}")
+    print(f"end-position: {match.end()}")
+    print("---")""",
+                },
+                {
+                    "title": "Replace Text",
+                    "py_can_run": True,
+                    "code": """import re
+
+text = "Price: 120"
+
+result = re.sub(r"\d+", "999", text)
+
+# Price: 999
+print(f"result: {result}")""",
+                },
+                {
+                    "title": "Split Using Regex",
+                    "py_can_run": True,
+                    "code": """import re
+
+text = "Python,Java;C++|Go"
+
+parts = re.split(r"[,;|]", text)
+
+# ['Python', 'Java', 'C++', 'Go']
+print(f"parts: {parts}")""",
+                },
+                {
+                    "title": "Extract Words",
+                    "py_can_run": True,
+                    "code": """import re
+
+text = "Python is awesome!"
+
+words = re.findall(r"\w+", text)
+
+# ['Python', 'is', 'awesome']
+print(f"words: {words}")""",
+                },
+                {
+                    "title": "Extract Email",
+                    "py_can_run": True,
+                    "code": """import re
+
+text = "Contact: john@example.com"
+
+email = re.search(r"[\w.-]+@[\w.-]+\.\w+", text)
+
+# john@example.com
+print(email.group())""",
+                },
+                {
+                    "title": "Validate Email",
+                    "py_can_run": True,
+                    "code": """import re
+
+email = "user@gmail.com"
+data = "@usergmail.com"
+
+pattern = r"^[\w.-]+@[\w.-]+\.\w+$"
+
+# True
+print(f"{email} - {bool(re.fullmatch(pattern, email))}")
+
+# False
+print(f"{data} - {bool(re.fullmatch(pattern, data))}")""",
+                },
+            ],
+        },
     ]
 
 
@@ -2826,6 +2954,8 @@ def get_sidebar_options():
         "HTTP Requests",
         "Async Operations",
         "Date & Time",
+        "Regular Expression",
+        "About Developer",
     ]
 
 
@@ -2863,6 +2993,12 @@ class PySubChapter:
 
         self.editor_key = f"code_editor_{self.key}-{self.index}"
         self.namespace = {"__builtins__": __import__("builtins")}
+
+        self.py_code_output_key = f"py_code_output-{self.key}_{self.index}"
+        self.py_code_output_label_key = f"output_label-{self.key}_{self.index}"
+        self.py_code_output_placeholder_key = (
+            f"output_placeholder-{self.key}_{self.index}"
+        )
 
     @st.fragment
     def render(self):
@@ -2940,14 +3076,6 @@ class PySubChapter:
                     and "text" in self.py_code[self.py_code_key]
                     and self.py_code[self.py_code_key].get("type") == "submit"
                 ):
-                    self.py_code_output_key = f"py_code_output-{self.key}_{self.index}"
-                    self.py_code_output_label_key = (
-                        f"output_label-{self.key}_{self.index}"
-                    )
-                    self.py_code_output_placeholder_key = (
-                        f"output_placeholder-{self.key}_{self.index}"
-                    )
-
                     if self.py_code_output_label_key not in self.py_code:
                         self.py_code[self.py_code_output_label_key] = st.empty()
 
@@ -2980,7 +3108,6 @@ class PySubChapter:
             st.markdown(self.py_config_value["notes"])
 
     def run_py_code(self, code: str, output_label, output_placeholder):
-
         self.output_list = []
         self.writer = StreamlitCallbackWriter(
             self.output_list, output_label, output_placeholder
@@ -3038,31 +3165,53 @@ def py_chapter_tab(
 
 
 @st.fragment
+def about_page():
+    st.set_page_config(layout="centered")
+    st.subheader("🐍 Python Quick Reference", divider=True, width="content")
+    st.caption(
+        "A quick and interactive Python reference for learners and developers.\n\nBuilt with ❤️ using Python & Streamlit"
+    )
+    st.subheader("About Developer")
+    st.markdown(
+        "**Samir Solanki** | [Linkedin](https://linkedin.com/in/samir38) | [Portfolio](https://noto.li/fxHVPg)"
+    )
+
+    st.write(
+        """Hi, I'm Samir Solanki, a passionate software developer who enjoys building practical tools that simplify learning and improve developer productivity.
+
+I created Python Quick Reference to provide a fast, interactive and beginner-friendly resource for anyone learning Python or needing a quick syntax refresher. The goal is to make programming concepts easy to explore through examples and hands-on practice.
+
+I enjoy working with Python, Streamlit, automation, AI and modern software development and I'm always exploring new technologies to build useful applications.
+
+Thanks for checking out Python Quick Reference. I hope it helps make your Python journey a little easier and more enjoyable.
+
+Happy coding! 🐍""",
+    )
+
+
+@st.fragment
 def render_chapter(selected_section_: str):
     if selected_section_ in sidebar_options:
         option_index = sidebar_options.index(selected_section_)
-        st.subheader(
-            f"Python Quick Ref : {selected_section_}",
-            width="content",
-            text_alignment="center",
-            divider=True,
-            anchor=False,
-        )
 
-        with st.container(
-            border=False, horizontal=True, vertical_alignment="center", width="content"
-        ):
-            st.markdown(
-                "Developed by: **Samir Solanki** | [Linkedin](https://linkedin.com/in/samir38) | [Portfolio](https://noto.li/fxHVPg)"
+        if option_index == len(sidebar_options) - 1:
+            about_page()
+        else:
+            st.subheader(
+                f"Python Quick Ref : {selected_section_}",
+                width="content",
+                text_alignment="center",
+                divider=True,
+                anchor=False,
             )
-
-        py_cs_config = py_cheatsheet_config[option_index]
-        if py_cs_config:
-            py_chapter_tab(
-                key=f"{py_cs_config["key"]}-{int(datetime.now().timestamp())}",
-                py_code_config=py_cs_config["py_code_config"],
-                py_notes=py_cs_config.get("py_notes", None),
-            )
+            st.divider()
+            py_cs_config = py_cheatsheet_config[option_index]
+            if py_cs_config:
+                py_chapter_tab(
+                    key=f"{py_cs_config["key"]}-{int(datetime.now().timestamp())}",
+                    py_code_config=py_cs_config["py_code_config"],
+                    py_notes=py_cs_config.get("py_notes", None),
+                )
 
 
 preselected_chapter = "Variables"
