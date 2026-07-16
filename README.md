@@ -14,7 +14,7 @@ Fast • Beginner Friendly • Interactive • Live Playground
 
 👉 [using stlite - WASM Build] https://samsol38.github.io/python-cheatsheet/index.html
 
-👉 [using streamlit] https://py-cheatsheet.streamlit.app/
+👉 [using StreamLit] https://py-cheatsheet.streamlit.app/
 
 </div>
 
